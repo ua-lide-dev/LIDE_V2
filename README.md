@@ -14,15 +14,23 @@ https://blog.usejournal.com/how-to-enable-docker-remote-api-on-docker-host-7b73b
 
 
 ## Configurer l'application
-Vous pouvez modifier le fichier `.env` afin de changer les variables de configuration. Des valeurs par défaut sont déjà présentes.
 
+Vous pouvez modifier le fichier `.env` afin de changer les variables de configuration. Des valeurs par défaut sont déjà présentes.
+>  **Important**: Il faut que le conteneur wss écoute sur le port 2375 pour la compilation d'un fichier.
+> - Vérifié cela avec la commande```docker container exec lide-wss netstat -lapute | grep 2375```.
+>  Si cela n'est pas le cas alors :
+>  - Vérifié avec cette commande la configuration de votre docker.service ```sudo cat /etc/systemd/system/multi-user.target.wants/docker.service | grep 2375```, cette ligne vous retournera ```ExecStart=/usr/sbin/dockerd -H fd:// -H=tcp://0.0.0.0:2375 $DOCKER_OPTS```.
+>  Si cela n'est pas le cas alors :
+>  - Editer la ligne ```ExecStart``` du fichier suivant ```/etc/systemd/system/multi-user.target.wants/docker.service``` pour quelle ressemble à l'étape d'avant.
+>  Une fois cela fait redemarrer votre ordinateur puis :
+>  - Executer les commandes ```./start_lide.sh -f``` puis ```./start_lide.sh```
 >  **Important**: Les serveurs WebSocket, API(back) et Web doivent pouvoir être accessible depuis internet.  
 >  **Important**: Choisir et modifier la clée privée JWT.
 
   
   
 ## Installation des sources
-Installer ou lancer l'application en appelant le script `start_lide.sh` pour générer les images et déployer les services.(Il faut parfois executer deux fois le script `start_lide.sh`)
+Installer ou lancer l'application en appelant le script `start_lide.sh` pour générer les images et déployer les services. Cette 
 
 Lancez à nouveau le script avec l'option `-i` pour construire les images qui serviront pour les conteneurs d'éxécution (pour l'instant java, python et c++). Cette étape n'est plus nécéssaire ensuite pour relancer l'application.  
 
