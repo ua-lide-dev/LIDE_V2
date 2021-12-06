@@ -79,13 +79,12 @@ services:
     container_name: ${LIDE_CONTAINER_WSS}
     hostname: ${LIDE_CONTAINER_WSS}
     environment:
-      LIDE_WSS_PORT: ${LIDE_WSS_PORT_INTERN}
-
+      LIDE_WSS_PORT: ${LIDE_WSS_PORT_EXPOSED}
     env_file:
       - .env
     working_dir: /app
-    ports:
-      - ${LIDE_WSS_PORT_EXPOSED}:${LIDE_WSS_PORT_INTERN}
+    #ports:
+    #  - ${LIDE_WSS_PORT_EXPOSED}:${LIDE_WSS_PORT_INTERN}
     entrypoint: node server_socket.js
     network_mode: host
 

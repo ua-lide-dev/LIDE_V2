@@ -62,10 +62,6 @@ async function ensureAuthenticated(req, res, next) {
   const session = req.headers.session;
   //const username = await SessionService.validateSession(session);
   //if (!username) res.status(401).json("User is not authenticated");
-  
-  // Toutes les requêtes se basent sur username étant donnée que le cas est désactivé, 
-  // il n'y a plus de session qui est généré par conséquent il faut indiqué un utilisateur en dur
-  //req.username = "user2";
   next();
 }
 
