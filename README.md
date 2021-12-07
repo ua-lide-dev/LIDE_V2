@@ -80,7 +80,7 @@ Pour que l'application prenne en compte un nouveau langage, il suffit de quelque
   
 
  # Architecture du projet
- ![architecture macro de l'application](documents/architecture_generale.png "Architecture macro de l'application")  
+ ![architecture macro de l'application](LIDE-APP/documents/architecture_generale.png "Architecture macro de l'application")  
  
  # Technologies
  
