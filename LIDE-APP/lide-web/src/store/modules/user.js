@@ -2,20 +2,24 @@ import service from "../../services/user-service";
 
 const state = () => ({
     username: "",
+    isProf: false,
     users: []
 });
 
 const getters = {
-    username (state)  {
+    username(state) {
         return state.username;
+    },
+    isProf(state) {
+        return state.isProf;
     }
 }
 
 const actions = {
-    setUsername({commit}, username){
+    setUsername({ commit }, username) {
         commit('SET_USERNAME', username)
     },
-    createUser(context){
+    createUser(context) {
         console.log("user du createUser du store " + context.getters.username);
         // (Tanguy) on stocke le nom de l'utilisateur dans un objet localStorage qui stocke des données côté client
         localStorage.username = context.getters.username;
@@ -32,11 +36,11 @@ const actions = {
 }
 
 const mutations = {
-    SET_USERNAME(state, username){
+    SET_USERNAME(state, username) {
         state.username = username;
     },
 
-    SET_USERS(state, users){
+    SET_USERS(state, users) {
         state.users = users;
     }
 }

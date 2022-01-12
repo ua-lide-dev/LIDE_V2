@@ -96,7 +96,7 @@ export default {
 			projetRules: [
 				(p) => p != null || "Vous devez écrire au moins un caractère !",
 				(p) => /^[^\s][a-zA-Z0-9_-]*$/.test(p) || "Nom du projet invalide.",
-			],
+			]
 		};
 	},
 
@@ -158,7 +158,7 @@ export default {
 	},
 	computed: {
 		...mapState({
-			username: (state) => state.user.username,
+			username: (state) => state.user.username
 		}),
 	},
 };

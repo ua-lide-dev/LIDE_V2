@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card class="px-5">
+        <v-card class="px-5" v-if="isProf">
             <v-card-title>Liste des élèves</v-card-title>
             <v-select v-model="idUser"
             :items="users"
@@ -28,7 +28,8 @@ export default {
 	computed: {
 		...mapState({
 			users: (state) => state.user.users,
-            projects: (state) => state.project.projects
+            projects: (state) => state.project.projects,
+			isProf: (state) => state.user.isProf //determine if user is a professor
 		}),
 	},
 	methods: {

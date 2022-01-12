@@ -10,27 +10,27 @@ const ProjectService = require('./project.service');
  * @return {User}
  *
  */
-exports.get = async (username) => {
-  const match = {username: username};
+exports.get = async(username) => {
+    const match = { username: username };
 
-  const user = await User.findOne(match).catch((error) => {
-    throw error;
-  });
+    const user = await User.findOne(match).catch((error) => {
+        throw error;
+    });
 
-  if (user == null) throw new Error('User not found');
+    if (user == null) throw new Error('User not found');
 
-  return user;
+    return user;
 };
 
-exports.getAll = async () => {
+exports.getAll = async() => {
 
-  const users = await User.find().catch((error) => {
-    throw error;
-  });
+    const users = await User.find().catch((error) => {
+        throw error;
+    });
 
-  if (users == null) throw new Error('Users not found');
+    if (users == null) throw new Error('Users not found');
 
-  return users;
+    return users;
 };
 
 /**
@@ -41,27 +41,27 @@ exports.getAll = async () => {
  * @return {User}
  *
  */
-exports.getOrCreate = async (username) => {
-  const match = {username: username};
-  let user = await User.findOne(match).catch((error) => {
-    throw error;
-  });
-
-  if (user == null) {
-    user = await create(username).catch((error) => {
-      throw error;
+exports.getOrCreate = async(username) => {
+    const match = { username: username };
+    let user = await User.findOne(match).catch((error) => {
+        throw error;
     });
-  }
 
-  return user;
+    if (user == null) {
+        user = await create(username).catch((error) => {
+            throw error;
+        });
+    }
+
+    return user;
 };
 
-exports.NewUser = async (username) => {
-  const match = {username: username};
+exports.NewUser = async(username) => {
+    const match = { username: username };
     user = await create(username).catch((error) => {
-      throw error;
+        throw error;
     });
-  return user;
+    return user;
 };
 
 /**
@@ -71,17 +71,17 @@ exports.NewUser = async (username) => {
  * @return {User}
  *
  */
-const create = async (username) => {
-  const user = new User({username: username, projects: []});
+const create = async(username) => {
+    const user = new User({ username: username, projects: [], isProf: false }); //isProf false by default
 
-  await user
-      .save()
-      .then((result = user))
-      .catch((error) => {
-        throw error;
-      });
+    await user
+        .save()
+        .then((result = user))
+        .catch((error) => {
+            throw error;
+        });
 
-  return user;
+    return user;
 };
 
 /**
@@ -90,24 +90,24 @@ const create = async (username) => {
  * @param {string} username
  * @return {string} status
  */
-exports.delete = async (username) => {
-  // get the user
-  const user = await this.get(username).catch((error) => {
-    throw error;
-  });
-
-  for (let i = 0; i < user.projects.length; i++) {
-    const projectid = user.projects[i];
-    await ProjectService.delete(username, projectid).catch((error) => {
-      throw error;
+exports.delete = async(username) => {
+    // get the user
+    const user = await this.get(username).catch((error) => {
+        throw error;
     });
-  }
 
-  User.deleteOne(user).catch((error) => {
-    throw error;
-  });
+    for (let i = 0; i < user.projects.length; i++) {
+        const projectid = user.projects[i];
+        await ProjectService.delete(username, projectid).catch((error) => {
+            throw error;
+        });
+    }
 
-  return 'User deleted';
+    User.deleteOne(user).catch((error) => {
+        throw error;
+    });
+
+    return 'User deleted';
 };
 
 /**
@@ -119,43 +119,43 @@ exports.delete = async (username) => {
  * @return {string} projects
  *
  */
-exports.getProjects = async (username) => {
-  const result = [];
-  console.log(username);
-  const user = await this.get(username).catch((error) => {
-    console.log(error);
-    throw error;
-  });
-
-  for (let p = 0; p < user.projects.length; p++) {
-    const projectid = user.projects[p];
-    const project = await Project.findById(projectid).catch((error) => {
-      throw error;
-    });
-    try {
-      result.push({_id: project._id, projectname: project.projectname, files: []});
-    } catch (error) {
-      result.push({undefined: projectid});
-    }
-
-    for (let f = 0; f < project.files.length; f++) {
-      const fileid = project.files[f];
-      const file = await File.findById(fileid).catch((error) => {
+exports.getProjects = async(username) => {
+    const result = [];
+    console.log(username);
+    const user = await this.get(username).catch((error) => {
+        console.log(error);
         throw error;
-      });
-      try {
-        result[p].files.push({
-          _id: file._id,
-          filename: file.filename,
-          extension: file.extension,
-        });
-      } catch (error) {
-        result[p].files.push({undefined: fileid});
-      }
-    }
-  }
+    });
 
-  return result;
+    for (let p = 0; p < user.projects.length; p++) {
+        const projectid = user.projects[p];
+        const project = await Project.findById(projectid).catch((error) => {
+            throw error;
+        });
+        try {
+            result.push({ _id: project._id, projectname: project.projectname, files: [] });
+        } catch (error) {
+            result.push({ undefined: projectid });
+        }
+
+        for (let f = 0; f < project.files.length; f++) {
+            const fileid = project.files[f];
+            const file = await File.findById(fileid).catch((error) => {
+                throw error;
+            });
+            try {
+                result[p].files.push({
+                    _id: file._id,
+                    filename: file.filename,
+                    extension: file.extension,
+                });
+            } catch (error) {
+                result[p].files.push({ undefined: fileid });
+            }
+        }
+    }
+
+    return result;
 };
 
 /**
@@ -165,13 +165,13 @@ exports.getProjects = async (username) => {
  * @param {string} projectid
  *
  */
-exports.linkProject = async (username, projectid) => {
-  const query = {username: username};
-  const update = {$addToSet: {projects: projectid}};
+exports.linkProject = async(username, projectid) => {
+    const query = { username: username };
+    const update = { $addToSet: { projects: projectid } };
 
-  await User.findOneAndUpdate(query, update, (err) => {
-    if (err) throw err;
-  });
+    await User.findOneAndUpdate(query, update, (err) => {
+        if (err) throw err;
+    });
 };
 
 /**
@@ -181,11 +181,11 @@ exports.linkProject = async (username, projectid) => {
  * @param {string} projectid
  *
  */
-exports.unlinkProject = async (username, projectid) => {
-  const query = {username: username};
-  const update = {$pull: {projects: projectid}};
+exports.unlinkProject = async(username, projectid) => {
+    const query = { username: username };
+    const update = { $pull: { projects: projectid } };
 
-  await User.findOneAndUpdate(query, update, (err) => {
-    if (err) throw err;
-  });
+    await User.findOneAndUpdate(query, update, (err) => {
+        if (err) throw err;
+    });
 };
